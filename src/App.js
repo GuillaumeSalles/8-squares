@@ -4,6 +4,7 @@ import './App.css';
 import './Scene.css';
 
 import Tile from './Tile/Tile';
+import testImg from './test-img.jpg';
 
 function Tiles(props) {
   return [...Array(props.nbOfTiles)].map((v, i) => {
@@ -12,7 +13,7 @@ function Tiles(props) {
       position={i}
       total={props.nbOfTiles}
       source={props.source}
-      sceneSize={props.sceneSize} />;
+      sceneMaxSize={props.sceneMaxSize} />;
   });
 }
 
@@ -23,8 +24,8 @@ class App extends Component {
     super(props);
     this.state = {
       nbOfTiles: 9,
-      source: 'http://lorempixel.com/800/800/nature/3/',
-      sceneSize: 600 // this needs to be dynamic
+      source: testImg,
+      sceneMaxSize: 1024 // this needs to be dynamic
     }
   }
 
@@ -38,11 +39,11 @@ class App extends Component {
         <div className="App-body">
           <div
             className="Scene"
-            style={{ width: this.state.sceneSize }}>
+            style={{maxWidth: this.state.sceneMaxSize}}>
             <Tiles
               nbOfTiles={this.state.nbOfTiles}
               source={this.state.source}
-              sceneSize={this.state.sceneSize}/>
+              sceneMaxSize={this.state.sceneMaxSize}/>
           </div>
         </div>
 

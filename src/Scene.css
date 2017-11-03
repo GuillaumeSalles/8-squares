@@ -1,5 +1,8 @@
 .Scene {
+    position: relative;
     padding: 18px;
     background: red;
+    width: 100%;
+    box-sizing: border-box;
     margin: 0 auto;
 }

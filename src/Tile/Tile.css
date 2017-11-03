@@ -1,14 +1,27 @@
 .Tile {
     display: block;
-    position: relative;
     background: lightblue;
-    border: 2px solid white;
     box-sizing: border-box;
+    margin-bottom: 6px;
 
     /* Critical */
+    position: relative;
     overflow: hidden;
 }
+.Tile:before {
+    content: '';
+    float: left;
+    padding-top: 100%;
+}
 
+.Tile-content {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+}
 
 .Tile .Tile-infos {
     z-index: 2;
@@ -22,6 +35,8 @@
 
 .Tile .Tile-source {
     z-index: 1;
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     display: block;
 }

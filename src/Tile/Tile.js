@@ -3,32 +3,55 @@ import './Tile.css';
 
 export default class Tile extends Component {
 
+    constructor(props) {
+        super(props);
+
+
+        this.tileSpacing = 6;
+        this.appPadding = 24; //make it dynamic with css
+    }
+
+    getNbOfColumn() {
+        return Math.sqrt(this.props.total);
+    }
+
     getSize() {
-        const total = this.props.total;
-        const size = this.props.sceneSize;
-        return Math.sqrt(total) / total * 100 + '%';
+        return this.getNbOfColumn() / this.props.total * 100 + '%';
+    }
+
+    amountToRemove() {
+        return
     }
 
     render() {
-        // Dimension of the tile
         const tileStyles = {
             width: this.getSize(),
-            paddingBottom: this.getSize(),
-            height: 0
+        };
+
+        const tileContentStyles = {
+            margin: this.tileSpacing
         };
 
         // Source dimension has to be full width
-        const sourceSize = {
-            width: this.props.sceneSize
+        const amountToRemove = this.tileSpacing * this.getNbOfColumn() + this.appPadding;
+        const tileSourceSize = {
+            width: `calc(100vw - ${amountToRemove}px)`,
+            maxWidth: this.props.sceneMaxSize - amountToRemove
         };
 
         return (
-            <div className="Tile" style={tileStyles}>
-                <div className="Tile-infos">{this.props.position} of {this.props.total}</div>
-                <img
-                    style={sourceSize}
-                    className="Tile-source"
-                    src={this.props.source}/>
+            <div
+                className="Tile"
+                style={tileStyles}>
+                <div
+                    className="Tile-content"
+                    style={tileContentStyles}>
+                    <div className="Tile-infos">{this.props.position} of {this.props.total}</div>
+                    <img
+                        style={tileSourceSize}
+                        className="Tile-source"
+                        src={this.props.source}/>
+                </div>
             </div>
         );
     }
