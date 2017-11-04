@@ -4,7 +4,7 @@ import './App.css';
 import './Scene.css';
 
 import Tile from './Tile/Tile';
-import testImg from './test-img.jpg';
+import testImg from './test-img-2.jpg';
 
 function getSwipeDirection(tiles, index) {
     if (canMoveDown(tiles, index)) {

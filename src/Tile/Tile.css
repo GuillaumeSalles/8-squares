@@ -1,6 +1,5 @@
 .Tile {
     display: block;
-    background: lightblue;
     box-sizing: border-box;
 
     /* Critical */
@@ -28,9 +27,9 @@
 .Tile .Tile-infos {
     z-index: 2;
     position: absolute;
-    top: 6px;
-    left: 6px;
-    padding: 6px;
+    top: 4px;
+    left: 4px;
+    padding: 4px;
     background: black;
     color: white;
 }
