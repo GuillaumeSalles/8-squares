@@ -6,23 +6,21 @@ import './Scene.css';
 import Tile from './Tile/Tile';
 import testImg from './test-img-2.jpg';
 
+const nbOfColumns = 3;
+
 function getSwipeDirection(tiles, index) {
     if (canMoveDown(tiles, index)) {
         return 'DOWN';
     }
-
     if (canMoveUp(tiles, index)) {
         return 'UP';
     }
-
     if (canMoveLeft(tiles, index)) {
         return 'LEFT';
     }
-
     if (canMoveRight(tiles, index)) {
         return 'RIGHT';
     }
-
     return 'NONE';
 }
 
@@ -42,20 +40,38 @@ function canMoveDown(tiles, index) {
     return index < 6 && tiles[index + 3] === -1;
 }
 
-function hadSwipeEnough(state) {
+function hadSwipeEnough(state, tileSize) {
     const tileIndex = state.tiles.indexOf(state.draggedTile);
 
     switch (getSwipeDirection(state.tiles, tileIndex)) {
         case 'UP':
-            return getOffsetY(state, tileIndex) < -33;
+            return getUpOffset(state, tileSize) < -100 / nbOfColumns;
         case 'DOWN':
-            return getOffsetY(state, tileIndex) > 33;
+            return getDownOffset(state, tileSize) > 100 / nbOfColumns;
         case 'RIGHT':
-            return getOffsetX(state, tileIndex) > 33;
+            return getRightOffset(state, tileSize) > 100 / nbOfColumns;
         case 'LEFT':
-            return getOffsetX(state, tileIndex) < -33;
+            return getLeftOffset(state, tileSize) < -100 / nbOfColumns;
         case 'NONE':
+        default:
             return false;
+    }
+}
+
+function getTransform(state, tile, tileSize) {
+    const tileIndex = state.tiles.indexOf(tile);
+    switch (getSwipeDirection(state.tiles, tileIndex)) {
+        case 'UP':
+            return `translate(0%, ${getUpOffset(state, tileSize)}%)`;
+        case 'DOWN':
+            return `translate(0%, ${getDownOffset(state, tileSize)}%)`;
+        case 'RIGHT':
+            return `translate(${getRightOffset(state, tileSize)}%, 0%)`;
+        case 'LEFT':
+            return `translate(${getLeftOffset(state, tileSize)}%, 0%)`;
+        case 'NONE':
+        default:
+            return '';
     }
 }
 
@@ -71,58 +87,26 @@ function swap(state) {
     });
 }
 
-function getTransform(state, tile) {
-    if (state.draggedTile !== tile) {
-        return 'translate(0%, 0%)';
-    }
-
-    const tileIndex = state.tiles.indexOf(tile);
-
-    const offsetX = getOffsetX(state, tileIndex);
-    const offsetY = getOffsetY(state, tileIndex);
-    return `translate(${offsetX}%, ${offsetY}%)`;
+function getLeftOffset(state, tileSize) {
+    return Math.max(Math.min((state.currentX - state.startingX) / tileSize * 300, 0), -100);
 }
 
-function getOffsetX(state, tileIndex) {
-    if (canMoveRight(state.tiles, tileIndex)) {
-        return Math.max(
-            Math.min((state.currentX - state.startingX) / window.innerWidth * 300, 100),
-            0
-        );
-    }
-
-    if (canMoveLeft(state.tiles, tileIndex)) {
-        return Math.max(
-            Math.min((state.currentX - state.startingX) / window.innerWidth * 300, 0),
-            -100
-        );
-    }
-
-    return 0;
+function getRightOffset(state, tileSize) {
+    return Math.max(Math.min((state.currentX - state.startingX) / tileSize * 300, 100), 0);
 }
 
-function getOffsetY(state, tileIndex) {
-    if (canMoveDown(state.tiles, tileIndex)) {
-        return Math.max(
-            Math.min((state.currentY - state.startingY) / window.innerHeight * 300, 100),
-            0
-        );
-    }
-
-    if (canMoveUp(state.tiles, tileIndex)) {
-        return Math.max(
-            Math.min((state.currentY - state.startingY) / window.innerHeight * 300, 0),
-            -100
-        );
-    }
-
-    return 0;
+function getUpOffset(state, tileSize) {
+    return Math.max(Math.min((state.currentY - state.startingY) / tileSize * 300, 0), -100);
 }
 
-function getTileValueFromTarget(target) {
+function getDownOffset(state, tileSize) {
+    return Math.max(Math.min((state.currentY - state.startingY) / tileSize * 300, 100), 0);
+}
+
+function getTileElement(target) {
     while (target != null) {
-        if (target.attributes['name'] != null) {
-            return parseInt(target.attributes['name'].value);
+        if (target.attributes['tile'] != null) {
+            return target;
         }
         target = target.parentElement;
     }
@@ -130,28 +114,13 @@ function getTileValueFromTarget(target) {
     return null;
 }
 
-function initTiles(nbOfTiles) {
-    const tiles = [];
-    for (let i = 0; i < nbOfTiles - 1; i++) {
-        tiles.push(i);
-    }
-    return tiles.concat([-1]);
+function getTileValue(target) {
+    const element = getTileElement(target);
+    return element === null ? null : parseInt(element.attributes['tile'].value);
 }
 
-function Tiles(props) {
-    return initTiles(props.nbOfTiles).map((v, i) => {
-        return (
-            <div key={i} name={i.toString()}>
-                <Tile
-                    key={i}
-                    position={i}
-                    total={props.nbOfTiles}
-                    source={props.source}
-                    sceneMaxSize={props.sceneMaxSize}
-                />
-            </div>
-        );
-    });
+function initTiles(nbOfTiles) {
+    return [0, 1, 2, 3, -1, 4, 5, 6, 7];
 }
 
 class App extends Component {
@@ -161,11 +130,13 @@ class App extends Component {
             nbOfTiles: 9,
             source: testImg,
             sceneMaxSize: 1024, // this needs to be dynamic,
+            tiles: initTiles(9),
             draggedTile: null,
             startingX: null,
             startingY: null,
             currentX: null,
-            currentY: null
+            currentY: null,
+            transform: null
         };
 
         this.handleTileTouchStart = this.handleTileTouchStart.bind(this);
@@ -174,16 +145,19 @@ class App extends Component {
     }
 
     handleTileTouchMove(e) {
-        if (this.state.draggedTile !== null) {
-            this.setState({
-                currentX: e.touches[0].clientX,
-                currentY: e.touches[0].clientY
-            });
+        if (this.state.draggedTile === null) {
+            return;
         }
+
+        this.setState({
+            currentX: e.touches[0].clientX,
+            currentY: e.touches[0].clientY,
+            transform: getTransform(this.state, this.state.draggedTile, getTileElement(e.target).offsetWidth)
+        });
     }
 
     handleTileTouchStart(e) {
-        const tile = getTileValueFromTarget(e.target);
+        const tile = getTileValue(e.target);
         if (tile === null || tile === -1) {
             return;
         }
@@ -203,12 +177,15 @@ class App extends Component {
         }
 
         this.setState({
-            tiles: hadSwipeEnough(this.state) ? swap(this.state) : this.state.tiles,
+            tiles: hadSwipeEnough(this.state, getTileElement(e.target).offsetWidth)
+                ? swap(this.state)
+                : this.state.tiles,
             draggedTile: null,
             startingX: null,
             startingY: null,
             currentX: null,
-            currentY: null
+            currentY: null,
+            transform: null
         });
     }
 
@@ -227,17 +204,29 @@ class App extends Component {
                         onTouchEnd={this.handleTileTouchEnd}
                         onTouchMove={this.handleTileTouchMove}
                     >
-                        <div className="Scene-content">
-                            <Tiles
-                                nbOfTiles={this.state.nbOfTiles}
-                                source={this.state.source}
-                                sceneMaxSize={this.state.sceneMaxSize}
-                            />
-                        </div>
+                        <div className="Scene-content">{this.renderTiles()}</div>
                     </div>
                 </div>
             </div>
         );
+    }
+
+    renderTiles() {
+        return this.state.tiles.map((v, i) => {
+            return (
+                <div key={i} tile={v}>
+                    <Tile
+                        key={i}
+                        position={i}
+                        originalPosition={v}
+                        dragTransform={this.state.draggedTile === v ? this.state.transform : ''}
+                        total={this.state.tiles.length}
+                        source={this.state.source}
+                        sceneMaxSize={this.state.sceneMaxSize}
+                    />
+                </div>
+            );
+        });
     }
 }
 

@@ -5,8 +5,8 @@ export default class Tile extends Component {
     constructor(props) {
         super(props);
 
-        this.tileSpacing = 4;
-        this.appPadding = 24; //make it dynamic with css
+        this.tileSpacing = 3;
+        this.appPadding = 18; //make it dynamic with css
     }
 
     getNbOfColumns() {
@@ -20,14 +20,12 @@ export default class Tile extends Component {
     getTilePosition() {
         const posX = (this.props.position % this.getNbOfColumns()) * 100;
         const posY = Math.floor(this.props.position / this.getNbOfColumns()) * 100;
-        return `translateX(${posX}%) translateY(${posY}%)`;
+        return `translateX(${posX}%) translateY(${posY}%) ${this.props.dragTransform}`;
     }
 
     getSourceOffset() {
-        const offsetX =
-            (this.props.originalPosition % this.getNbOfColumns()) / this.getNbOfColumns() * 100;
-        const offsetY =
-            Math.floor(this.props.position / this.getNbOfColumns()) / this.getNbOfColumns() * 100;
+        const offsetX = (this.props.originalPosition % this.getNbOfColumns()) / this.getNbOfColumns() * 100;
+        const offsetY = Math.floor(this.props.originalPosition / this.getNbOfColumns()) / this.getNbOfColumns() * 100;
         return `translateX(-${offsetX}%) translateY(-${offsetY}%)`;
     }
 
@@ -43,7 +41,7 @@ export default class Tile extends Component {
         };
 
         // Source dimension has to be full width
-        const amountToRemove = this.tileSpacing * this.getNbOfColumns() + this.appPadding;
+        const amountToRemove = this.tileSpacing * this.getNbOfColumns() + this.appPadding + this.tileSpacing * 2;
         const tileSourceStyles = {
             width: `calc(100vw - ${amountToRemove}px)`,
             maxWidth: this.props.sceneMaxSize - amountToRemove,
