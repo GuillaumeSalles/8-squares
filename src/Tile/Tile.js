@@ -6,7 +6,6 @@ export default class Tile extends Component {
     constructor(props) {
         super(props);
 
-
         this.tileSpacing = 6;
         this.appPadding = 24; //make it dynamic with css
     }
@@ -19,13 +18,17 @@ export default class Tile extends Component {
         return this.getNbOfColumn() / this.props.total * 100 + '%';
     }
 
-    amountToRemove() {
-        return
+    getPosition() {
+        const posX = (this.props.position % this.getNbOfColumn()) * 100;
+        const posY = Math.floor(this.props.position / this.getNbOfColumn()) * 100;
+
+        return `translateX(${posX}%) translateY(${posY}%)`;
     }
 
     render() {
         const tileStyles = {
             width: this.getSize(),
+            transform: this.getPosition()
         };
 
         const tileContentStyles = {

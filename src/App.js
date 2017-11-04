@@ -40,10 +40,12 @@ class App extends Component {
           <div
             className="Scene"
             style={{maxWidth: this.state.sceneMaxSize}}>
-            <Tiles
-              nbOfTiles={this.state.nbOfTiles}
-              source={this.state.source}
-              sceneMaxSize={this.state.sceneMaxSize}/>
+            <div className="Scene-content">
+              <Tiles
+                nbOfTiles={this.state.nbOfTiles}
+                source={this.state.source}
+                sceneMaxSize={this.state.sceneMaxSize}/>
+            </div>
           </div>
         </div>
 

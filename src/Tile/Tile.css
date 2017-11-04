@@ -2,12 +2,14 @@
     display: block;
     background: lightblue;
     box-sizing: border-box;
-    margin-bottom: 6px;
 
     /* Critical */
-    position: relative;
+    position: absolute;
+    top: 0;
+    left: 0;
     overflow: hidden;
 }
+
 .Tile:before {
     content: '';
     float: left;

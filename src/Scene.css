@@ -1,8 +1,20 @@
 .Scene {
     position: relative;
-    padding: 18px;
     background: red;
     width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
+    padding: 6px;
+
+    overflow: hidden;
+}
+
+.Scene:before {
+    content: '';
+    float: left;
+    padding-top: 100%;
+}
+
+.Scene-content {
+    position: relative;
 }
