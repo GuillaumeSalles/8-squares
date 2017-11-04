@@ -4,14 +4,16 @@ import './App.css';
 import './Scene.css';
 
 import Tile from './Tile/Tile';
-import testImg from './test-img.jpg';
+import testImg from './test-img-2.jpg';
 
 function Tiles(props) {
-    return [...Array(props.nbOfTiles)].map((v, i) => {
+    return [0, 1, 2, 3, 4, 5, 6, 7, -1].map((v, i) => {
+        console.log(v, i);
         return (
             <Tile
                 key={i}
                 position={i}
+                originalPosition={v}
                 total={props.nbOfTiles}
                 source={props.source}
                 sceneMaxSize={props.sceneMaxSize}
