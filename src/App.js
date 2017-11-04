@@ -8,7 +8,6 @@ import testImg from './test-img-2.jpg';
 
 function Tiles(props) {
     return [0, 1, 2, 3, 4, 5, 6, 7, -1].map((v, i) => {
-        console.log(v, i);
         return (
             <Tile
                 key={i}

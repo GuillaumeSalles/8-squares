@@ -4,29 +4,32 @@
  */
 
 img {
-  border-style: none;
+    border-style: none;
 }
 
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40px;
+    animation: App-logo-spin infinite 20s linear;
+    height: 40px;
 }
 
 .App-header {
-  background-color: #222;
-  padding: 12px
+    background-color: #222;
+    padding: 12px;
 }
 
 .App-title {
-  font-size: 1.5em;
+    font-size: 1.5em;
 }
 
 .App-body {
-  padding: 24px;
+    padding: 12px;
 }
 
-
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }

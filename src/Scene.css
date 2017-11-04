@@ -1,10 +1,10 @@
 .Scene {
     position: relative;
-    background: red;
+    background: lightgray;
     width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
-    padding: 6px;
+    padding: 3px;
 
     overflow: hidden;
 }
