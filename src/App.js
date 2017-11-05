@@ -4,7 +4,8 @@ import './App.css';
 import './Scene.css';
 
 import Tile from './Tile/Tile';
-import testImg from './test-img-2.jpg';
+//import testImg from './test-img-2.jpg';
+const testImg = 'http://78.media.tumblr.com/51144cab5cc3f836b5878f5ae5608b27/tumblr_oogj4lygzB1rbnsp1o1_500.gif';
 
 const nbOfColumns = 3;
 
@@ -120,7 +121,7 @@ function getTileValue(target) {
 }
 
 function initTiles(nbOfTiles) {
-    return [0, 1, 2, 3, -1, 4, 5, 6, 7];
+    return [0, 1, 2, 3, 4, 5, 6, 7, -1];
 }
 
 class App extends Component {
@@ -195,7 +196,6 @@ class App extends Component {
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                 </header>
-
                 <div className="App-body">
                     <div
                         className="Scene"

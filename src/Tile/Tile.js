@@ -5,7 +5,7 @@ export default class Tile extends Component {
     constructor(props) {
         super(props);
 
-        this.tileSpacing = 3;
+        this.tileSpacing = 0.5;
         this.appPadding = 18; //make it dynamic with css
     }
 
@@ -51,9 +51,6 @@ export default class Tile extends Component {
         return (
             <div className="Tile" style={tileStyles}>
                 <div className="Tile-content" style={tileContentStyles}>
-                    <div className="Tile-infos">
-                        {this.props.originalPosition} | {this.props.position} of {this.props.total}
-                    </div>
                     <img className="Tile-source" style={tileSourceStyles} src={this.props.source} />
                 </div>
             </div>
