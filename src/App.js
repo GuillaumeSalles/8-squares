@@ -4,10 +4,11 @@ import './Scene.css';
 
 import Tile from './Tile/Tile';
 //import testImg from './test-img-2.jpg';
-const testImg = 'http://78.media.tumblr.com/51144cab5cc3f836b5878f5ae5608b27/tumblr_oogj4lygzB1rbnsp1o1_500.gif';
+import images from './Images.js';
+const testImg = images[0].url;
 
-const nbOfColumns = 3;
-const nbOfRows = 3;
+const nbOfColumns = 4;
+const nbOfRows = 4;
 const EMPTY_TILE = -1;
 
 function getSwipeDirection(tiles, index) {
