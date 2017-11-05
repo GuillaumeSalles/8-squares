@@ -7,9 +7,18 @@ import Tile from './Tile/Tile';
 import images from './Images.js';
 const testImg = images[0].url;
 
-const nbOfColumns = 4;
-const nbOfRows = 4;
+const nbOfColumns = 3;
+const nbOfRows = 3;
 const EMPTY_TILE = -1;
+
+function hasWon(tiles) {
+    for (var i = 1; i < tiles.length - 1; i++) {
+        if (tiles[i - 1] > tiles[i]) {
+            return false;
+        }
+    }
+    return true;
+}
 
 function getSwipeDirection(tiles, index) {
     if (canMoveDown(tiles, index)) {
@@ -204,10 +213,16 @@ class App extends Component {
             return;
         }
 
+        const tiles = hadSwipeEnough(this.state, getTileElement(e.target).offsetWidth)
+            ? swap(this.state)
+            : this.state.tiles;
+
+        if (hasWon(tiles)) {
+            console.log('You won!');
+        }
+
         this.setState({
-            tiles: hadSwipeEnough(this.state, getTileElement(e.target).offsetWidth)
-                ? swap(this.state)
-                : this.state.tiles,
+            tiles: tiles,
             draggedTile: null,
             startingX: null,
             startingY: null,
