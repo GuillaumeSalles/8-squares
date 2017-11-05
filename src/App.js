@@ -8,6 +8,8 @@ import Tile from './Tile/Tile';
 const testImg = 'http://78.media.tumblr.com/51144cab5cc3f836b5878f5ae5608b27/tumblr_oogj4lygzB1rbnsp1o1_500.gif';
 
 const nbOfColumns = 3;
+const nbOfRows = 3;
+const EMPTY_TILE = -1;
 
 function getSwipeDirection(tiles, index) {
     if (canMoveDown(tiles, index)) {
@@ -26,19 +28,19 @@ function getSwipeDirection(tiles, index) {
 }
 
 function canMoveRight(tiles, index) {
-    return index % 3 < 2 && tiles[index + 1] === -1;
+    return index % nbOfColumns < nbOfColumns - 1 && tiles[index + 1] === EMPTY_TILE;
 }
 
 function canMoveLeft(tiles, index) {
-    return index % 3 > 0 && tiles[index - 1] === -1;
+    return index % nbOfColumns > 0 && tiles[index - 1] === EMPTY_TILE;
 }
 
 function canMoveUp(tiles, index) {
-    return index > 2 && tiles[index - 3] === -1;
+    return index / nbOfRows !== 0 && tiles[index - nbOfColumns] === EMPTY_TILE;
 }
 
 function canMoveDown(tiles, index) {
-    return index < 6 && tiles[index + 3] === -1;
+    return index / nbOfRows !== nbOfRows - 1 && tiles[index + nbOfColumns] === EMPTY_TILE;
 }
 
 function hadSwipeEnough(state, tileSize) {
@@ -121,7 +123,12 @@ function getTileValue(target) {
 }
 
 function initTiles(nbOfTiles) {
-    return [0, 1, 2, 3, 4, 5, 6, 7, -1];
+    const tiles = [];
+    for (let i = 0; i < nbOfTiles - 1; i++) {
+        tiles.push(i);
+    }
+    tiles.push(EMPTY_TILE);
+    return tiles;
 }
 
 class App extends Component {
@@ -131,7 +138,7 @@ class App extends Component {
             nbOfTiles: 9,
             source: testImg,
             sceneMaxSize: 1024, // this needs to be dynamic,
-            tiles: initTiles(9),
+            tiles: initTiles(nbOfColumns * nbOfRows),
             draggedTile: null,
             startingX: null,
             startingY: null,
@@ -159,7 +166,7 @@ class App extends Component {
 
     handleTileTouchStart(e) {
         const tile = getTileValue(e.target);
-        if (tile === null || tile === -1) {
+        if (tile === null || tile === EMPTY_TILE) {
             return;
         }
 
