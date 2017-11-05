@@ -7,20 +7,6 @@ img {
     border-style: none;
 }
 
-.App-logo {
-    animation: App-logo-spin infinite 20s linear;
-    height: 40px;
-}
-
-.App-header {
-    background-color: #222;
-    padding: 12px;
-}
-
-.App-title {
-    font-size: 1.5em;
-}
-
 .App-body {
     padding: 12px;
 }
