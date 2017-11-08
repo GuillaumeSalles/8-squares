@@ -20,7 +20,7 @@ export default class Tile extends Component {
     getTilePosition() {
         const posX = (this.props.position % this.getNbOfColumns()) * 100;
         const posY = Math.floor(this.props.position / this.getNbOfColumns()) * 100;
-        return `translateX(${posX}%) translateY(${posY}%) ${this.props.dragTransform}`;
+        return `translateX(${posX}%) translateY(${posY}%)`;
     }
 
     getSourceOffset() {
