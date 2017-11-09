@@ -31,6 +31,7 @@ export default class Tile extends Component {
 
     shouldComponentUpdate(nextProps) {
         return (
+            this.props.isVisible !== nextProps.isVisible ||
             this.props.position !== nextProps.position ||
             this.props.originalPosition !== nextProps.originalPosition ||
             this.props.total !== nextProps.total ||
@@ -43,7 +44,7 @@ export default class Tile extends Component {
         const tileStyles = {
             width: this.getTileSize(),
             transform: this.getTilePosition(),
-            visibility: this.props.originalPosition === -1 ? 'hidden' : 'visible'
+            visibility: this.props.isVisible ? 'visible' : 'hidden'
         };
 
         const tileContentStyles = {

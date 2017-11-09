@@ -9,14 +9,13 @@ const testImg = images[0].url;
 
 const nbOfColumns = 3;
 const nbOfRows = 3;
-const EMPTY_TILE = -1;
 
 const UP = 0;
 const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 
-function hasWon(tiles) {
+function areTilesOrdered(tiles) {
     for (let i = 0; i < tiles.length; i++) {
         if (i !== tiles[i].position) {
             return false;
@@ -179,9 +178,7 @@ class App extends Component {
     }
 
     render() {
-        if (hasWon(this.state.tiles)) {
-            console.log('You won!');
-        }
+        const hasWon = areTilesOrdered(this.state.tiles);
 
         return (
             <div className="App">
@@ -205,7 +202,8 @@ class App extends Component {
                 <Tile
                     key={i}
                     position={tile.position}
-                    originalPosition={i === this.state.tiles.length - 1 ? EMPTY_TILE : i}
+                    isVisible={i !== this.state.tiles.length - 1}
+                    originalPosition={i}
                     total={this.state.tiles.length}
                     source={this.state.source}
                     sceneMaxSize={this.state.sceneMaxSize}
