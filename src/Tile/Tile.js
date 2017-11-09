@@ -29,6 +29,16 @@ export default class Tile extends Component {
         return `translateX(-${offsetX}%) translateY(-${offsetY}%)`;
     }
 
+    shouldComponentUpdate(nextProps) {
+        return (
+            this.props.position !== nextProps.position ||
+            this.props.originalPosition !== nextProps.originalPosition ||
+            this.props.total !== nextProps.total ||
+            this.props.source !== nextProps.source ||
+            this.props.sceneMaxSize !== nextProps.sceneMaxSize
+        );
+    }
+
     render() {
         const tileStyles = {
             width: this.getTileSize(),
@@ -49,7 +59,7 @@ export default class Tile extends Component {
         };
 
         return (
-            <div className="Tile" style={tileStyles}>
+            <div className="Tile" tile={this.props.originalPosition} style={tileStyles}>
                 <div className="Tile-content" style={tileContentStyles}>
                     <img className="Tile-source" style={tileSourceStyles} src={this.props.source} />
                 </div>

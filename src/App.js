@@ -12,8 +12,8 @@ const nbOfRows = 4;
 const EMPTY_TILE = -1;
 
 function hasWon(tiles) {
-    for (var i = 1; i < tiles.length - 1; i++) {
-        if (tiles[i - 1] > tiles[i]) {
+    for (let i = 0; i < tiles.length; i++) {
+        if (i !== tiles[i].position) {
             return false;
         }
     }
@@ -56,46 +56,56 @@ function getSwipeDirection(startX, startY, endX, endY) {
 }
 
 function move(tiles, direction) {
-    const emptyTileIndex = tiles.indexOf(EMPTY_TILE);
+    const emptyTilePosition = tiles[tiles.length - 1].position;
     switch (direction) {
         case 'NONE':
             return tiles;
         case 'RIGHT':
-            return canMoveRight(tiles, emptyTileIndex) ? swap(tiles, emptyTileIndex, emptyTileIndex - 1) : tiles;
+            return canMoveRight(tiles, emptyTilePosition)
+                ? swap(tiles, emptyTilePosition, emptyTilePosition - 1)
+                : tiles;
         case 'LEFT':
-            return canMoveLeft(tiles, emptyTileIndex) ? swap(tiles, emptyTileIndex, emptyTileIndex + 1) : tiles;
+            return canMoveLeft(tiles, emptyTilePosition)
+                ? swap(tiles, emptyTilePosition, emptyTilePosition + 1)
+                : tiles;
         case 'UP':
-            return canMoveUp(tiles, emptyTileIndex) ? swap(tiles, emptyTileIndex, emptyTileIndex + nbOfColumns) : tiles;
+            return canMoveUp(tiles, emptyTilePosition)
+                ? swap(tiles, emptyTilePosition, emptyTilePosition + nbOfColumns)
+                : tiles;
         case 'DOWN':
-            return canMoveDown(tiles, emptyTileIndex)
-                ? swap(tiles, emptyTileIndex, emptyTileIndex - nbOfColumns)
+            return canMoveDown(tiles, emptyTilePosition)
+                ? swap(tiles, emptyTilePosition, emptyTilePosition - nbOfColumns)
                 : tiles;
         default:
             return tiles;
     }
 }
 
-function canMoveRight(tiles, emptyTileIndex) {
-    return emptyTileIndex % nbOfColumns > 0;
+function canMoveRight(tiles, emptyTilePosition) {
+    return emptyTilePosition % nbOfColumns > 0;
 }
 
-function canMoveLeft(tiles, emptyTileIndex) {
-    return emptyTileIndex % nbOfColumns < nbOfColumns - 1;
+function canMoveLeft(tiles, emptyTilePosition) {
+    return emptyTilePosition % nbOfColumns < nbOfColumns - 1;
 }
 
-function canMoveUp(tiles, emptyTileIndex) {
-    return emptyTileIndex / nbOfRows < nbOfRows - 1;
+function canMoveUp(tiles, emptyTilePosition) {
+    return emptyTilePosition / nbOfRows < nbOfRows - 1;
 }
 
-function canMoveDown(tiles, emptyTileIndex) {
-    return emptyTileIndex / nbOfRows >= 1;
+function canMoveDown(tiles, emptyTilePosition) {
+    return emptyTilePosition / nbOfRows >= 1;
 }
 
 function swap(tiles, a, b) {
-    const tmp = tiles[a];
-    tiles[a] = tiles[b];
-    tiles[b] = tmp;
-    return tiles;
+    return tiles.map(tile => {
+        if (tile.position === a) {
+            tile.position = b;
+        } else if (tile.position === b) {
+            tile.position = a;
+        }
+        return tile;
+    });
 }
 
 function shuffle(array) {
@@ -120,11 +130,10 @@ function shuffle(array) {
 
 function initTiles(nbOfTiles) {
     const tiles = [];
-    for (let i = 0; i < nbOfTiles - 1; i++) {
-        tiles.push(i);
+    for (let i = 0; i < nbOfTiles; i++) {
+        tiles.push({ position: i });
     }
-    tiles.push(EMPTY_TILE);
-    return shuffle(tiles);
+    return tiles;
 }
 
 class App extends Component {
@@ -192,12 +201,12 @@ class App extends Component {
     }
 
     renderTiles() {
-        return this.state.tiles.map((v, i) => {
+        return this.state.tiles.map((tile, i) => {
             return (
                 <Tile
                     key={i}
-                    position={i}
-                    originalPosition={v}
+                    position={tile.position}
+                    originalPosition={i === this.state.tiles.length - 1 ? EMPTY_TILE : i}
                     total={this.state.tiles.length}
                     source={this.state.source}
                     sceneMaxSize={this.state.sceneMaxSize}
