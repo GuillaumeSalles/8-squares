@@ -7,9 +7,14 @@ import Tile from './Tile/Tile';
 import images from './Images.js';
 const testImg = images[0].url;
 
-const nbOfColumns = 4;
-const nbOfRows = 4;
+const nbOfColumns = 3;
+const nbOfRows = 3;
 const EMPTY_TILE = -1;
+
+const UP = 0;
+const RIGHT = 1;
+const DOWN = 2;
+const LEFT = 3;
 
 function hasWon(tiles) {
     for (let i = 0; i < tiles.length; i++) {
@@ -23,13 +28,13 @@ function hasWon(tiles) {
 function keyToDirection(key) {
     switch (key) {
         case 'ArrowDown':
-            return 'DOWN';
+            return DOWN;
         case 'ArrowUp':
-            return 'UP';
+            return UP;
         case 'ArrowLeft':
-            return 'LEFT';
+            return LEFT;
         case 'ArrowRight':
-            return 'RIGHT';
+            return RIGHT;
         default:
             return 'NONE';
     }
@@ -40,15 +45,15 @@ function getSwipeDirection(startX, startY, endX, endY) {
     const offsetY = endY - startY;
     if (Math.abs(offsetX) > Math.abs(offsetY)) {
         if (offsetX > 25) {
-            return 'RIGHT';
+            return RIGHT;
         } else if (offsetX < -25) {
-            return 'LEFT';
+            return LEFT;
         }
     } else {
         if (offsetY > 25) {
-            return 'DOWN';
+            return DOWN;
         } else if (offsetY < -25) {
-            return 'UP';
+            return UP;
         }
     }
 
@@ -60,19 +65,19 @@ function move(tiles, direction) {
     switch (direction) {
         case 'NONE':
             return tiles;
-        case 'RIGHT':
+        case RIGHT:
             return canMoveRight(tiles, emptyTilePosition)
                 ? swap(tiles, emptyTilePosition, emptyTilePosition - 1)
                 : tiles;
-        case 'LEFT':
+        case LEFT:
             return canMoveLeft(tiles, emptyTilePosition)
                 ? swap(tiles, emptyTilePosition, emptyTilePosition + 1)
                 : tiles;
-        case 'UP':
+        case UP:
             return canMoveUp(tiles, emptyTilePosition)
                 ? swap(tiles, emptyTilePosition, emptyTilePosition + nbOfColumns)
                 : tiles;
-        case 'DOWN':
+        case DOWN:
             return canMoveDown(tiles, emptyTilePosition)
                 ? swap(tiles, emptyTilePosition, emptyTilePosition - nbOfColumns)
                 : tiles;
@@ -108,24 +113,18 @@ function swap(tiles, a, b) {
     });
 }
 
-function shuffle(array) {
-    var currentIndex = array.length,
-        temporaryValue,
-        randomIndex;
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
 
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-
-        // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+function shuffle(tiles, nbOfTimes) {
+    for (var i = 0; i < nbOfTimes; i++) {
+        const direction = getRandomInt(0, 4);
+        tiles = move(tiles, direction);
     }
-
-    return array;
+    return tiles;
 }
 
 function initTiles(nbOfTiles) {
@@ -133,7 +132,7 @@ function initTiles(nbOfTiles) {
     for (let i = 0; i < nbOfTiles; i++) {
         tiles.push({ position: i });
     }
-    return tiles;
+    return shuffle(tiles, 80);
 }
 
 class App extends Component {
