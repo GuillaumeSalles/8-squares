@@ -4,5 +4,6 @@
 
 - Winner screen
 - Collection of local images
-- Swipe with keyboard
+- Swipe animation
 - Game introduction
+- PWA
