@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import './Scene.css';
-
 import Tile from './Tile/Tile';
-//import testImg from './test-img-2.jpg';
 import images from './Images.js';
-const testImg = images[0].url;
 
 const nbOfColumns = 3;
 const nbOfRows = 3;
@@ -131,23 +128,24 @@ function initTiles(nbOfTiles) {
     for (let i = 0; i < nbOfTiles; i++) {
         tiles.push({ position: i });
     }
-    return shuffle(tiles, 80);
+    return shuffle(tiles, 3);
 }
 
-class App extends Component {
+class Game extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            nbOfTiles: 9,
-            source: testImg,
-            sceneMaxSize: 1024, // this needs to be dynamic,
+            sceneMaxSize: 600, // this needs to be dynamic,
             tiles: initTiles(nbOfColumns * nbOfRows),
             startingX: null,
-            startingY: null
+            startingY: null,
+            imageIndex: getRandomInt(0, images.length)
         };
 
         this.handleTileTouchStart = this.handleTileTouchStart.bind(this);
         this.handleTileTouchEnd = this.handleTileTouchEnd.bind(this);
+        this.handleNewGameClick = this.handleNewGameClick.bind(this);
+
         window.addEventListener('keydown', ev => {
             this.setState({
                 tiles: move(this.state.tiles, keyToDirection(ev.key))
@@ -177,20 +175,33 @@ class App extends Component {
         });
     }
 
+    handleNewGameClick() {
+        this.setState({
+            tiles: initTiles(nbOfColumns * nbOfRows),
+            imageIndex: (this.state.imageIndex + 1) % images.length
+        });
+    }
+
     render() {
         const hasWon = areTilesOrdered(this.state.tiles);
 
+        const winningScreenStyle = hasWon ? { opacity: 1 } : { opacity: 0 };
         return (
-            <div className="App">
-                <div className="App-body">
-                    <div
-                        className="Scene"
-                        style={{ maxWidth: this.state.sceneMaxSize }}
-                        onTouchStart={this.handleTileTouchStart}
-                        onTouchEnd={this.handleTileTouchEnd}
-                    >
-                        <div className="Scene-content">{this.renderTiles()}</div>
-                    </div>
+            <div
+                className="Scene"
+                style={{ maxWidth: this.state.sceneMaxSize }}
+                onTouchStart={this.handleTileTouchStart}
+                onTouchEnd={this.handleTileTouchEnd}
+            >
+                <div className="Scene-content">{this.renderTiles()}</div>
+                <div className="Winning-screen" style={{ transition: hasWon ? '' : 'none', opacity: hasWon ? 1 : 0 }}>
+                    <img className="Full-image" src={images[this.state.imageIndex].src} />
+                    <a className="Origin-link" href={images[this.state.imageIndex].origin}>
+                        By {images[this.state.imageIndex].author}
+                    </a>
+                    <button className="New-game-button" onClick={this.handleNewGameClick}>
+                        New Game
+                    </button>
                 </div>
             </div>
         );
@@ -205,7 +216,7 @@ class App extends Component {
                     isVisible={i !== this.state.tiles.length - 1}
                     originalPosition={i}
                     total={this.state.tiles.length}
-                    source={this.state.source}
+                    source={images[this.state.imageIndex].src}
                     sceneMaxSize={this.state.sceneMaxSize}
                 />
             );
@@ -213,4 +224,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default Game;

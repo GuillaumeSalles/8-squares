@@ -25,20 +25,11 @@
     bottom: 0;
 }
 
-.Tile .Tile-infos {
-    z-index: 2;
-    position: absolute;
-    top: 4px;
-    left: 4px;
-    padding: 4px;
-    background: black;
-    color: white;
-}
-
 .Tile .Tile-source {
     z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
     display: block;
+    width: 100vw;
 }

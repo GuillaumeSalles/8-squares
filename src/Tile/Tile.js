@@ -5,8 +5,7 @@ export default class Tile extends Component {
     constructor(props) {
         super(props);
 
-        this.tileSpacing = 0.5;
-        this.appPadding = 18; //make it dynamic with css
+        this.tileSpacing = 1;
     }
 
     getNbOfColumns() {
@@ -26,7 +25,8 @@ export default class Tile extends Component {
     getSourceOffset() {
         const offsetX = (this.props.originalPosition % this.getNbOfColumns()) / this.getNbOfColumns() * 100;
         const offsetY = Math.floor(this.props.originalPosition / this.getNbOfColumns()) / this.getNbOfColumns() * 100;
-        return `translateX(-${offsetX}%) translateY(-${offsetY}%)`;
+        return `translateX(-${offsetX}%) translateY(-${offsetY}%) translateX(${-this.tileSpacing}px) translateY(${-this
+            .tileSpacing}px) `;
     }
 
     shouldComponentUpdate(nextProps) {
@@ -51,11 +51,8 @@ export default class Tile extends Component {
             margin: this.tileSpacing
         };
 
-        // Source dimension has to be full width
-        const amountToRemove = this.tileSpacing * this.getNbOfColumns() + this.appPadding + this.tileSpacing * 2;
         const tileSourceStyles = {
-            width: `calc(100vw - ${amountToRemove}px)`,
-            maxWidth: this.props.sceneMaxSize - amountToRemove,
+            maxWidth: this.props.sceneMaxSize,
             transform: this.getSourceOffset()
         };
 
