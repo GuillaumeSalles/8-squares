@@ -184,8 +184,6 @@ class Game extends Component {
 
     render() {
         const hasWon = areTilesOrdered(this.state.tiles);
-
-        const winningScreenStyle = hasWon ? { opacity: 1 } : { opacity: 0 };
         return (
             <div
                 className="Scene"

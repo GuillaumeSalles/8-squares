@@ -16,6 +16,10 @@ export default [
     { src: src6, origin: 'http://nicolereber.tumblr.com/post/112994588207', author: 'Nicolerber' },
     { src: src7, origin: 'http://design-milk.com/stone-fields-by-giuseppe-randazzo/', author: 'Giuseppe Randazzo' },
     { src: src8, origin: 'http://kevc.tumblr.com/post/159115819074', author: 'Kevc' },
-    { src: src9, origin: 'http://escapejournal.tumblr.com/post/53801337771/michael-cina-biolumin-v1v2' },
+    {
+        src: src9,
+        origin: 'https://www.theghostlystore.com/collections/art/products/michael-cina-biolumin-v-1#prettyPhoto',
+        author: 'Michael Cina'
+    },
     { src: src10, origin: 'http://www.mariasvarbova.com/swimmingpool-gnkl', author: 'Maria Svarbova' }
 ];
