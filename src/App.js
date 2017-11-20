@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import './Scene.css';
 import Tile from './Tile/Tile';
 import images from './Images.js';
