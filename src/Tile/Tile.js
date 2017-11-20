@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import './Tile.css';
 
+const tileSpacing = 1;
+
 export default class Tile extends Component {
-    constructor(props) {
-        super(props);
-
-        this.tileSpacing = 1;
-    }
-
     getTilePosition() {
         const posX = (this.props.position % this.props.gridSize) * 100;
         const posY = Math.floor(this.props.position / this.props.gridSize) * 100;
@@ -17,8 +13,7 @@ export default class Tile extends Component {
     getSourceOffset() {
         const offsetX = (this.props.originalPosition % this.props.gridSize) / this.props.gridSize * 100;
         const offsetY = Math.floor(this.props.originalPosition / this.props.gridSize) / this.props.gridSize * 100;
-        return `translateX(-${offsetX}%) translateY(-${offsetY}%) translateX(${-this.tileSpacing}px) translateY(${-this
-            .tileSpacing}px) `;
+        return `translateX(-${offsetX}%) translateY(-${offsetY}%) translateX(${-tileSpacing}px) translateY(${-tileSpacing}px) `;
     }
 
     shouldComponentUpdate(nextProps) {
@@ -39,10 +34,6 @@ export default class Tile extends Component {
             visibility: this.props.isVisible ? 'visible' : 'hidden'
         };
 
-        const tileContentStyles = {
-            margin: this.tileSpacing
-        };
-
         const tileSourceStyles = {
             maxWidth: this.props.sceneMaxSize,
             transform: this.getSourceOffset()
@@ -50,7 +41,12 @@ export default class Tile extends Component {
 
         return (
             <div className="Tile" tile={this.props.originalPosition} style={tileStyles}>
-                <div className="Tile-content" style={tileContentStyles}>
+                <div
+                    className="Tile-content"
+                    style={{
+                        margin: tileSpacing
+                    }}
+                >
                     <img className="Tile-source" style={tileSourceStyles} src={this.props.source} />
                 </div>
             </div>
