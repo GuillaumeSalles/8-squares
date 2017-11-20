@@ -52,7 +52,7 @@ function getSwipeDirection(startX, startY, endX, endY) {
         }
     }
 
-    return NavigationEvent;
+    return NONE;
 }
 
 function move(tiles, direction) {
