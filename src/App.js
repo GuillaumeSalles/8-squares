@@ -3,9 +3,7 @@ import './Scene.css';
 import Tile from './Tile/Tile';
 import images from './Images.js';
 
-const nbOfColumns = 3;
-const nbOfRows = 3;
-
+const gridSize = 3;
 const UP = 0;
 const RIGHT = 1;
 const DOWN = 2;
@@ -61,40 +59,22 @@ function move(tiles, direction) {
         case 'NONE':
             return tiles;
         case RIGHT:
-            return canMoveRight(tiles, emptyTilePosition)
-                ? swap(tiles, emptyTilePosition, emptyTilePosition - 1)
-                : tiles;
+            return emptyTilePosition % gridSize > 0 ? swap(tiles, emptyTilePosition, emptyTilePosition - 1) : tiles;
         case LEFT:
-            return canMoveLeft(tiles, emptyTilePosition)
+            return emptyTilePosition % gridSize < gridSize - 1
                 ? swap(tiles, emptyTilePosition, emptyTilePosition + 1)
                 : tiles;
         case UP:
-            return canMoveUp(tiles, emptyTilePosition)
-                ? swap(tiles, emptyTilePosition, emptyTilePosition + nbOfColumns)
+            return emptyTilePosition / gridSize < gridSize - 1
+                ? swap(tiles, emptyTilePosition, emptyTilePosition + gridSize)
                 : tiles;
         case DOWN:
-            return canMoveDown(tiles, emptyTilePosition)
-                ? swap(tiles, emptyTilePosition, emptyTilePosition - nbOfColumns)
+            return emptyTilePosition / gridSize >= 1
+                ? swap(tiles, emptyTilePosition, emptyTilePosition - gridSize)
                 : tiles;
         default:
             return tiles;
     }
-}
-
-function canMoveRight(tiles, emptyTilePosition) {
-    return emptyTilePosition % nbOfColumns > 0;
-}
-
-function canMoveLeft(tiles, emptyTilePosition) {
-    return emptyTilePosition % nbOfColumns < nbOfColumns - 1;
-}
-
-function canMoveUp(tiles, emptyTilePosition) {
-    return emptyTilePosition / nbOfRows < nbOfRows - 1;
-}
-
-function canMoveDown(tiles, emptyTilePosition) {
-    return emptyTilePosition / nbOfRows >= 1;
 }
 
 function swap(tiles, a, b) {
@@ -135,7 +115,7 @@ class Game extends Component {
         super(props);
         this.state = {
             sceneMaxSize: 600, // this needs to be dynamic,
-            tiles: initTiles(nbOfColumns * nbOfRows),
+            tiles: initTiles(gridSize * gridSize),
             startingX: null,
             startingY: null,
             imageIndex: getRandomInt(0, images.length)
@@ -176,7 +156,7 @@ class Game extends Component {
 
     handleNewGameClick() {
         this.setState({
-            tiles: initTiles(nbOfColumns * nbOfRows),
+            tiles: initTiles(gridSize * gridSize),
             imageIndex: (this.state.imageIndex + 1) % images.length
         });
     }
@@ -212,7 +192,7 @@ class Game extends Component {
                     position={tile.position}
                     isVisible={i !== this.state.tiles.length - 1}
                     originalPosition={i}
-                    total={this.state.tiles.length}
+                    gridSize={gridSize}
                     source={images[this.state.imageIndex].src}
                     sceneMaxSize={this.state.sceneMaxSize}
                 />

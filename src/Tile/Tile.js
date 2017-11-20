@@ -8,23 +8,15 @@ export default class Tile extends Component {
         this.tileSpacing = 1;
     }
 
-    getNbOfColumns() {
-        return Math.sqrt(this.props.total);
-    }
-
-    getTileSize() {
-        return this.getNbOfColumns() / this.props.total * 100 + '%';
-    }
-
     getTilePosition() {
-        const posX = (this.props.position % this.getNbOfColumns()) * 100;
-        const posY = Math.floor(this.props.position / this.getNbOfColumns()) * 100;
+        const posX = (this.props.position % this.props.gridSize) * 100;
+        const posY = Math.floor(this.props.position / this.props.gridSize) * 100;
         return `translateX(${posX}%) translateY(${posY}%)`;
     }
 
     getSourceOffset() {
-        const offsetX = (this.props.originalPosition % this.getNbOfColumns()) / this.getNbOfColumns() * 100;
-        const offsetY = Math.floor(this.props.originalPosition / this.getNbOfColumns()) / this.getNbOfColumns() * 100;
+        const offsetX = (this.props.originalPosition % this.props.gridSize) / this.props.gridSize * 100;
+        const offsetY = Math.floor(this.props.originalPosition / this.props.gridSize) / this.props.gridSize * 100;
         return `translateX(-${offsetX}%) translateY(-${offsetY}%) translateX(${-this.tileSpacing}px) translateY(${-this
             .tileSpacing}px) `;
     }
@@ -34,7 +26,7 @@ export default class Tile extends Component {
             this.props.isVisible !== nextProps.isVisible ||
             this.props.position !== nextProps.position ||
             this.props.originalPosition !== nextProps.originalPosition ||
-            this.props.total !== nextProps.total ||
+            this.props.gridSize !== nextProps.gridSize ||
             this.props.source !== nextProps.source ||
             this.props.sceneMaxSize !== nextProps.sceneMaxSize
         );
@@ -42,7 +34,7 @@ export default class Tile extends Component {
 
     render() {
         const tileStyles = {
-            width: this.getTileSize(),
+            width: 100 / this.props.gridSize + '%',
             transform: this.getTilePosition(),
             visibility: this.props.isVisible ? 'visible' : 'hidden'
         };
