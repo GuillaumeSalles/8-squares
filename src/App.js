@@ -8,6 +8,7 @@ const UP = 0;
 const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
+const NONE = -1;
 
 function areTilesOrdered(tiles) {
     for (let i = 0; i < tiles.length; i++) {
@@ -29,13 +30,14 @@ function keyToDirection(key) {
         case 'ArrowRight':
             return RIGHT;
         default:
-            return 'NONE';
+            return NONE;
     }
 }
 
 function getSwipeDirection(startX, startY, endX, endY) {
     const offsetX = endX - startX;
     const offsetY = endY - startY;
+
     if (Math.abs(offsetX) > Math.abs(offsetY)) {
         if (offsetX > 25) {
             return RIGHT;
@@ -50,14 +52,12 @@ function getSwipeDirection(startX, startY, endX, endY) {
         }
     }
 
-    return 'NONE';
+    return NavigationEvent;
 }
 
 function move(tiles, direction) {
     const emptyTilePosition = tiles[tiles.length - 1].position;
     switch (direction) {
-        case 'NONE':
-            return tiles;
         case RIGHT:
             return emptyTilePosition % gridSize > 0 ? swap(tiles, emptyTilePosition, emptyTilePosition - 1) : tiles;
         case LEFT:
