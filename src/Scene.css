@@ -3,6 +3,14 @@
         Helvetica Neue, sans-serifbody, html;
 }
 
+img {
+    border-style: none;
+}
+
+body {
+    overflow-y: hidden;
+}
+
 .Scene {
     position: relative;
     width: 100%;
