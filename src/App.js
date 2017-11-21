@@ -4,19 +4,18 @@ import Tile from './Tile/Tile';
 import images from './Images.js';
 
 const gridSize = 3;
+const nbOfTiles = gridSize * gridSize;
 const UP = 0;
 const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 const NONE = -1;
+const shuffleCount = 80;
 
-function areTilesOrdered(tiles) {
-    for (let i = 0; i < tiles.length; i++) {
-        if (i !== tiles[i]) {
-            return false;
-        }
-    }
-    return true;
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
 }
 
 function keyToDirection(key) {
@@ -55,25 +54,34 @@ function getSwipeDirection(startX, startY, endX, endY) {
     return NONE;
 }
 
-function move(tiles, direction) {
-    const emptyTilePosition = tiles[tiles.length - 1];
+function canMove(emptyTilePosition, direction) {
     switch (direction) {
         case RIGHT:
-            return emptyTilePosition % gridSize > 0 ? swap(tiles, emptyTilePosition, emptyTilePosition - 1) : tiles;
+            return emptyTilePosition % gridSize > 0;
         case LEFT:
-            return emptyTilePosition % gridSize < gridSize - 1
-                ? swap(tiles, emptyTilePosition, emptyTilePosition + 1)
-                : tiles;
+            return emptyTilePosition % gridSize < gridSize - 1;
         case UP:
-            return emptyTilePosition / gridSize < gridSize - 1
-                ? swap(tiles, emptyTilePosition, emptyTilePosition + gridSize)
-                : tiles;
+            return emptyTilePosition / gridSize < gridSize - 1;
         case DOWN:
-            return emptyTilePosition / gridSize >= 1
-                ? swap(tiles, emptyTilePosition, emptyTilePosition - gridSize)
-                : tiles;
+            return emptyTilePosition / gridSize >= 1;
+        case NONE:
         default:
-            return tiles;
+            return false;
+    }
+}
+
+function getTileToMove(emptyTilePosition, direction) {
+    switch (direction) {
+        case RIGHT:
+            return emptyTilePosition - 1;
+        case LEFT:
+            return emptyTilePosition + 1;
+        case UP:
+            return emptyTilePosition + gridSize;
+        case DOWN:
+            return emptyTilePosition - gridSize;
+        default:
+            throw new Error('Invalid direction');
     }
 }
 
@@ -88,34 +96,12 @@ function swap(tiles, a, b) {
     });
 }
 
-function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
-}
-
-function shuffle(tiles, nbOfTimes) {
-    for (var i = 0; i < nbOfTimes; i++) {
-        const direction = getRandomInt(0, 4);
-        tiles = move(tiles, direction);
-    }
-    return tiles;
-}
-
-function initTiles(nbOfTiles) {
-    const tiles = [];
-    for (let i = 0; i < nbOfTiles; i++) {
-        tiles.push(i);
-    }
-    return shuffle(tiles, 3);
-}
-
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sceneMaxSize: 600, // this needs to be dynamic,
-            tiles: initTiles(gridSize * gridSize),
+            sceneMaxSize: 600,
+            tiles: this.initTiles(),
             startingX: null,
             startingY: null,
             imageIndex: getRandomInt(0, images.length),
@@ -127,10 +113,7 @@ class App extends Component {
         this.handleNewGameClick = this.handleNewGameClick.bind(this);
 
         window.addEventListener('keydown', ev => {
-            this.setState({
-                tiles: move(this.state.tiles, keyToDirection(ev.key)),
-                isTutorialVisible: false
-            });
+            this.tryToMove(keyToDirection(ev.key));
         });
     }
 
@@ -149,23 +132,60 @@ class App extends Component {
             e.changedTouches[0].clientY
         );
 
-        this.setState({
-            tiles: move(this.state.tiles, direction),
-            startingX: null,
-            startingY: null,
-            isTutorialVisible: false
-        });
+        this.tryToMove(direction);
     }
 
     handleNewGameClick() {
         this.setState({
-            tiles: initTiles(gridSize * gridSize),
+            tiles: this.initTiles(gridSize * gridSize),
             imageIndex: (this.state.imageIndex + 1) % images.length
         });
     }
 
+    initTiles() {
+        let tiles = [];
+        for (let i = 0; i < nbOfTiles; i++) {
+            tiles.push(i);
+        }
+        for (var i = 0; i < shuffleCount; i++) {
+            const direction = getRandomInt(0, 4);
+            const emptyTilePosition = tiles[nbOfTiles - 1];
+            if (canMove(emptyTilePosition, direction)) {
+                tiles = swap(tiles, emptyTilePosition, getTileToMove(emptyTilePosition, direction));
+            }
+        }
+        return tiles;
+    }
+
+    tryToMove(direction) {
+        const emptyTilePosition = this.state.tiles[nbOfTiles - 1];
+
+        if (this.hasWon() || !canMove(emptyTilePosition, direction)) {
+            this.setState({
+                startingX: null,
+                startingY: null
+            });
+        } else {
+            this.setState({
+                isTutorialVisible: false,
+                startingX: null,
+                startingY: null,
+                tiles: swap(this.state.tiles, emptyTilePosition, getTileToMove(emptyTilePosition, direction))
+            });
+        }
+    }
+
+    hasWon() {
+        for (let i = 0; i < this.state.tiles.length; i++) {
+            if (i !== this.state.tiles[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     render() {
-        const hasWon = areTilesOrdered(this.state.tiles);
+        const shouldDisplayWinningScreen = this.hasWon();
         return (
             <div
                 className="Scene"
@@ -174,8 +194,14 @@ class App extends Component {
                 onTouchEnd={this.handleTileTouchEnd}
             >
                 <div className="Scene-content">{this.renderTiles()}</div>
-                <div className="Winning-screen" style={{ transition: hasWon ? '' : 'none', opacity: hasWon ? 1 : 0 }}>
-                    {hasWon && [
+                <div
+                    className="Winning-screen"
+                    style={{
+                        transition: shouldDisplayWinningScreen ? '' : 'none',
+                        opacity: shouldDisplayWinningScreen ? 1 : 0
+                    }}
+                >
+                    {shouldDisplayWinningScreen && [
                         <img className="Full-image" src={images[this.state.imageIndex].src} />,
                         <a className="Origin-link" href={images[this.state.imageIndex].origin}>
                             By {images[this.state.imageIndex].author}
@@ -198,7 +224,7 @@ class App extends Component {
                 <Tile
                     key={i}
                     position={tile}
-                    isVisible={i !== this.state.tiles.length - 1}
+                    isVisible={i !== nbOfTiles - 1}
                     originalPosition={i}
                     gridSize={gridSize}
                     source={images[this.state.imageIndex].src}
