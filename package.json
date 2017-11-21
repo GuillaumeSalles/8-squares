@@ -1,8 +1,8 @@
 {
-    "name": "8Squares",
+    "name": "8-squares",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://guillaumesalles.github.io/8Squares",
+    "homepage": "https://guillaumesalles.github.io/8-squares",
     "dependencies": {
         "gh-pages": "^1.0.0",
         "react": "^16.0.0",
