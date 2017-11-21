@@ -1,8 +1,8 @@
 {
-    "name": "archillect-game",
+    "name": "8Squares",
     "version": "0.1.0",
     "private": true,
-    "homepage": "https://guillaumesalles.github.io/archillect-game",
+    "homepage": "https://guillaumesalles.github.io/8Squares",
     "dependencies": {
         "gh-pages": "^1.0.0",
         "react": "^16.0.0",
