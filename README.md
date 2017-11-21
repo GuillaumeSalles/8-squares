@@ -1,6 +1,1 @@
-# Archillect  Game
-
-## Todo
-
-- Game introduction
-- PWA
+# 8 Squares
