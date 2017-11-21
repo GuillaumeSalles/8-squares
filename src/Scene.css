@@ -35,7 +35,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: all 0.8s ease-out;
+    transition: opacity 0.8s ease-out;
     opacity: 0;
 }
 
@@ -95,4 +95,14 @@ body {
     position: relative;
     overflow: hidden;
     margin: 10px;
+}
+
+.Tutorial-screen {
+    position: relative;
+    margin-top: calc(100% + 30px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: opacity 0.8s ease-out;
+    opacity: 1;
 }

@@ -110,7 +110,7 @@ function initTiles(nbOfTiles) {
     return shuffle(tiles, 3);
 }
 
-class Game extends Component {
+class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -118,7 +118,8 @@ class Game extends Component {
             tiles: initTiles(gridSize * gridSize),
             startingX: null,
             startingY: null,
-            imageIndex: getRandomInt(0, images.length)
+            imageIndex: getRandomInt(0, images.length),
+            isTutorialVisible: true
         };
 
         this.handleTileTouchStart = this.handleTileTouchStart.bind(this);
@@ -127,7 +128,8 @@ class Game extends Component {
 
         window.addEventListener('keydown', ev => {
             this.setState({
-                tiles: move(this.state.tiles, keyToDirection(ev.key))
+                tiles: move(this.state.tiles, keyToDirection(ev.key)),
+                isTutorialVisible: false
             });
         });
     }
@@ -150,7 +152,8 @@ class Game extends Component {
         this.setState({
             tiles: move(this.state.tiles, direction),
             startingX: null,
-            startingY: null
+            startingY: null,
+            isTutorialVisible: false
         });
     }
 
@@ -172,13 +175,18 @@ class Game extends Component {
             >
                 <div className="Scene-content">{this.renderTiles()}</div>
                 <div className="Winning-screen" style={{ transition: hasWon ? '' : 'none', opacity: hasWon ? 1 : 0 }}>
-                    <img className="Full-image" src={images[this.state.imageIndex].src} />
-                    <a className="Origin-link" href={images[this.state.imageIndex].origin}>
-                        By {images[this.state.imageIndex].author}
-                    </a>
-                    <button className="New-game-button" onClick={this.handleNewGameClick}>
-                        New Game
-                    </button>
+                    {hasWon && [
+                        <img className="Full-image" src={images[this.state.imageIndex].src} />,
+                        <a className="Origin-link" href={images[this.state.imageIndex].origin}>
+                            By {images[this.state.imageIndex].author}
+                        </a>,
+                        <button className="New-game-button" onClick={this.handleNewGameClick}>
+                            New Game
+                        </button>
+                    ]}
+                </div>
+                <div className="Tutorial-screen" style={{ opacity: this.state.isTutorialVisible ? 1 : 0 }}>
+                    <span>Swipe or use keyboard arrows.</span>
                 </div>
             </div>
         );
@@ -201,4 +209,4 @@ class Game extends Component {
     }
 }
 
-export default Game;
+export default App;
