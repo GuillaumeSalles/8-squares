@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './Scene.css';
+import './App.css';
 import Tile from './Tile/Tile';
 import images from './Images.js';
 
