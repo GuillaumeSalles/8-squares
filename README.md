@@ -1,1 +1,1 @@
-# 8 Squares
+# 8 squares
