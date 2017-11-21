@@ -12,7 +12,7 @@ const NONE = -1;
 
 function areTilesOrdered(tiles) {
     for (let i = 0; i < tiles.length; i++) {
-        if (i !== tiles[i].position) {
+        if (i !== tiles[i]) {
             return false;
         }
     }
@@ -56,7 +56,7 @@ function getSwipeDirection(startX, startY, endX, endY) {
 }
 
 function move(tiles, direction) {
-    const emptyTilePosition = tiles[tiles.length - 1].position;
+    const emptyTilePosition = tiles[tiles.length - 1];
     switch (direction) {
         case RIGHT:
             return emptyTilePosition % gridSize > 0 ? swap(tiles, emptyTilePosition, emptyTilePosition - 1) : tiles;
@@ -79,10 +79,10 @@ function move(tiles, direction) {
 
 function swap(tiles, a, b) {
     return tiles.map(tile => {
-        if (tile.position === a) {
-            tile.position = b;
-        } else if (tile.position === b) {
-            tile.position = a;
+        if (tile === a) {
+            return b;
+        } else if (tile === b) {
+            return a;
         }
         return tile;
     });
@@ -105,7 +105,7 @@ function shuffle(tiles, nbOfTimes) {
 function initTiles(nbOfTiles) {
     const tiles = [];
     for (let i = 0; i < nbOfTiles; i++) {
-        tiles.push({ position: i });
+        tiles.push(i);
     }
     return shuffle(tiles, 3);
 }
@@ -197,7 +197,7 @@ class App extends Component {
             return (
                 <Tile
                     key={i}
-                    position={tile.position}
+                    position={tile}
                     isVisible={i !== this.state.tiles.length - 1}
                     originalPosition={i}
                     gridSize={gridSize}
