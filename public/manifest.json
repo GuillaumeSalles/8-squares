@@ -2,12 +2,12 @@
     "name": "8 Squares",
     "icons": [
         {
-            "src": "/android-chrome-192x192.png?v=E6jo9doAbe",
+            "src": "/8Squares/android-chrome-192x192.png?v=E6jo9doAbe",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/android-chrome-512x512.png?v=E6jo9doAbe",
+            "src": "/8Squares/android-chrome-512x512.png?v=E6jo9doAbe",
             "sizes": "512x512",
             "type": "image/png"
         }
