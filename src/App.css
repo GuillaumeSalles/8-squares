@@ -3,20 +3,66 @@
         Helvetica Neue, sans-serifbody, html;
 }
 
+html {
+    height: 100%;
+}
+
 img {
     border-style: none;
 }
 
 body {
     overflow-y: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    position: relative;
+    text-decoration: none;
+    margin: 5px;
+    align-self: flex-end;
+    text-transform: uppercase;
+    font-size: 10px;
+    font-weight: 500;
+    user-select: none;
+    opacity: 0.45;
+    color: black;
+}
+
+a:hover {
+    opacity: 1;
+}
+
+a:before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 1px;
+    bottom: -5px;
+    left: 0;
+    background-color: black;
+    visibility: hidden;
+    transform: scaleX(0);
+    transition: all 0.25s ease-in-out;
+}
+
+a:hover:before {
+    visibility: visible;
+    transform: scaleX(1);
+}
+
+#root {
+    height: 100%;
 }
 
 .Scene {
     position: relative;
+    height: 100%;
     width: 100%;
     box-sizing: border-box;
     margin: 0 auto;
-
     overflow: hidden;
 }
 
@@ -46,38 +92,7 @@ body {
 }
 
 .Winning-screen .Origin-link {
-    position: relative;
-    text-decoration: none;
-    margin: 5px;
     align-self: flex-end;
-    text-transform: uppercase;
-    font-size: 10px;
-    font-weight: 500;
-    user-select: none;
-    opacity: 0.45;
-    color: black;
-}
-
-.Winning-screen .Origin-link:hover {
-    opacity: 1;
-}
-
-.Winning-screen .Origin-link:before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 1px;
-    bottom: -5px;
-    left: 0;
-    background-color: black;
-    visibility: hidden;
-    transform: scaleX(0);
-    transition: all 0.25s ease-in-out;
-}
-
-.Winning-screen .Origin-link:hover:before {
-    visibility: visible;
-    transform: scaleX(1);
 }
 
 .Winning-screen .New-game-button {
@@ -105,4 +120,10 @@ body {
     align-items: center;
     transition: opacity 0.8s ease-out;
     opacity: 1;
+}
+
+.About {
+    position: absolute;
+    bottom: 10px;
+    left: calc(50% - 22px);
 }

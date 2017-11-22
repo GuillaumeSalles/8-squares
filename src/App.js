@@ -202,17 +202,20 @@ class App extends Component {
                     }}
                 >
                     {shouldDisplayWinningScreen && [
-                        <img className="Full-image" src={images[this.state.imageIndex].src} />,
-                        <a className="Origin-link" href={images[this.state.imageIndex].origin}>
+                        <img key="full-image" className="Full-image" src={images[this.state.imageIndex].src} />,
+                        <a key="author" className="Origin-link" href={images[this.state.imageIndex].origin}>
                             By {images[this.state.imageIndex].author}
                         </a>,
-                        <button className="New-game-button" onClick={this.handleNewGameClick}>
+                        <button key="new-game" className="New-game-button" onClick={this.handleNewGameClick}>
                             New Game
                         </button>
                     ]}
                 </div>
                 <div className="Tutorial-screen" style={{ opacity: this.state.isTutorialVisible ? 1 : 0 }}>
                     <span>Swipe or use keyboard arrows.</span>
+                </div>
+                <div class="About">
+                    <a href="https://github.com/GuillaumeSalles/8-squares">About</a>
                 </div>
             </div>
         );
