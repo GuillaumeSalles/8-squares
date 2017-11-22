@@ -61,6 +61,7 @@ a:hover:before {
     position: relative;
     height: 100%;
     width: 100%;
+    max-width: 500px;
     box-sizing: border-box;
     margin: 0 auto;
     overflow: hidden;
@@ -83,7 +84,7 @@ a:hover:before {
     align-items: center;
     transition: opacity 0.8s ease-out;
     opacity: 0;
-    max-height: 630px;
+    max-height: 530px;
     height: calc(100vw + 30px);
 }
 

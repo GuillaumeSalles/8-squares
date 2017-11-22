@@ -22,8 +22,7 @@ export default class Tile extends Component {
             this.props.position !== nextProps.position ||
             this.props.originalPosition !== nextProps.originalPosition ||
             this.props.gridSize !== nextProps.gridSize ||
-            this.props.source !== nextProps.source ||
-            this.props.sceneMaxSize !== nextProps.sceneMaxSize
+            this.props.source !== nextProps.source
         );
     }
 
@@ -32,11 +31,6 @@ export default class Tile extends Component {
             width: 100 / this.props.gridSize + '%',
             transform: this.getTilePosition(),
             visibility: this.props.isVisible ? 'visible' : 'hidden'
-        };
-
-        const tileSourceStyles = {
-            maxWidth: this.props.sceneMaxSize,
-            transform: this.getSourceOffset()
         };
 
         return (
@@ -50,7 +44,9 @@ export default class Tile extends Component {
                     <img
                         alt={'tile' + this.props.originalPosition}
                         className="Tile-source"
-                        style={tileSourceStyles}
+                        style={{
+                            transform: this.getSourceOffset()
+                        }}
                         src={this.props.source}
                     />
                 </div>

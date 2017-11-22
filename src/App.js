@@ -100,7 +100,6 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            sceneMaxSize: 600,
             tiles: this.initTiles(),
             startingX: null,
             startingY: null,
@@ -187,12 +186,7 @@ class App extends Component {
     render() {
         const shouldDisplayWinningScreen = this.hasWon();
         return (
-            <div
-                className="Scene"
-                style={{ maxWidth: this.state.sceneMaxSize }}
-                onTouchStart={this.handleTileTouchStart}
-                onTouchEnd={this.handleTileTouchEnd}
-            >
+            <div className="Scene" onTouchStart={this.handleTileTouchStart} onTouchEnd={this.handleTileTouchEnd}>
                 <div className="Scene-content">{this.renderTiles()}</div>
                 <div
                     className="Winning-screen"
@@ -238,7 +232,6 @@ class App extends Component {
                     originalPosition={i}
                     gridSize={gridSize}
                     source={images[this.state.imageIndex].src}
-                    sceneMaxSize={this.state.sceneMaxSize}
                 />
             );
         });
