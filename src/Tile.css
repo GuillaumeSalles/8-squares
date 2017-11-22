@@ -1,8 +1,6 @@
 .Tile {
     display: block;
     box-sizing: border-box;
-
-    /* Critical */
     position: absolute;
     top: 0;
     left: 0;

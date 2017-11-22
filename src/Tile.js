@@ -47,7 +47,12 @@ export default class Tile extends Component {
                         margin: tileSpacing
                     }}
                 >
-                    <img className="Tile-source" style={tileSourceStyles} src={this.props.source} />
+                    <img
+                        alt={'tile' + this.props.originalPosition}
+                        className="Tile-source"
+                        style={tileSourceStyles}
+                        src={this.props.source}
+                    />
                 </div>
             </div>
         );

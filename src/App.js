@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
-import Tile from './Tile/Tile';
-import images from './Images.js';
+import Tile from './Tile';
+import images from './Images';
 
 const gridSize = 3;
 const nbOfTiles = gridSize * gridSize;
@@ -202,7 +202,12 @@ class App extends Component {
                     }}
                 >
                     {shouldDisplayWinningScreen && [
-                        <img key="full-image" className="Full-image" src={images[this.state.imageIndex].src} />,
+                        <img
+                            key="full-image"
+                            alt="solution"
+                            className="Full-image"
+                            src={images[this.state.imageIndex].src}
+                        />,
                         <a key="author" className="Origin-link" href={images[this.state.imageIndex].origin}>
                             By {images[this.state.imageIndex].author}
                         </a>,
@@ -214,7 +219,7 @@ class App extends Component {
                 <div className="Tutorial-screen" style={{ opacity: this.state.isTutorialVisible ? 1 : 0 }}>
                     <span>Swipe or use keyboard arrows.</span>
                 </div>
-                <div class="About">
+                <div className="About">
                     <a href="https://github.com/GuillaumeSalles/8-squares">About</a>
                 </div>
             </div>
