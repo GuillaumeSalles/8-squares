@@ -112,21 +112,18 @@ let hasWon = (tiles) => {
 
 let initTiles = () => {
   let tiles = 0 -- 8;
-  0
-  -- 80
-  |> List.map((_) => getRandomDirection())
-  |> List.fold_left(
-       (tls, direction) => {
-         let emptyTilePosition = List.nth(tls, nbOfTiles - 1);
-         let toMove = getTileToMove(emptyTilePosition, direction);
-         if (canMove(emptyTilePosition, direction)) {
-           swap(tls, emptyTilePosition, toMove)
-         } else {
-           tls
-         }
-       },
-       tiles
-     )
+  let rec shuffle = (count, tiles) =>
+    switch count {
+    | 0 => tiles
+    | count =>
+      let direction = getRandomDirection();
+      let emptyTilePosition = List.nth(tiles, nbOfTiles - 1);
+      let toMove = getTileToMove(emptyTilePosition, direction);
+      let newTiles =
+        canMove(emptyTilePosition, direction) ? swap(tiles, emptyTilePosition, toMove) : tiles;
+      shuffle(count - 1, newTiles)
+    };
+  shuffle(80, tiles)
 };
 
 let keyToDirection = (key) =>
