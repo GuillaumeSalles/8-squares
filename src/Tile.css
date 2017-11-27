@@ -1,34 +1,34 @@
 .Tile {
-    display: block;
-    box-sizing: border-box;
-    position: absolute;
-    top: 0;
-    left: 0;
-    overflow: hidden;
-    transition: all 0.1s ease-out;
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  transition: all 0.1s ease-out;
 }
 
 .Tile:before {
-    content: '';
-    float: left;
-    padding-top: 100%;
+  content: "";
+  float: left;
+  padding-top: 100%;
 }
 
 .Tile-content {
-    overflow: hidden;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
 }
 
 .Tile .Tile-source {
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    width: 100vw;
-    max-width: 500px;
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100vw;
+  max-width: 500px;
 }
