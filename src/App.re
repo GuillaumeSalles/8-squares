@@ -202,7 +202,6 @@ let make = (_children) => {
   },
   render: (self) =>
     <div
-      tabIndex=0
       className="Scene"
       onTouchStart=(
         self.reduce(
