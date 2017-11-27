@@ -9,6 +9,10 @@ let document: element = [%bs.raw {|document|}];
 
 let images = Images.data;
 
+let gridSize = 3;
+
+let nbOfTiles = gridSize * gridSize;
+
 Random.self_init();
 
 type action =
@@ -36,28 +40,14 @@ let getSwipeDirection = (startX, startY, endX, endY) => {
   let offsetX = int_of_float(endX -. startX);
   let offsetY = int_of_float(endY -. startY);
   let isHorizontalSwipe = abs(offsetX) > abs(offsetY);
-  isHorizontalSwipe ?
-    if (offsetX > 25) {
-      Right
-    } else if (offsetX < (-25)) {
-      Left
-    } else {
-      None
-    } :
-    (
-      if (offsetY > 25) {
-        Down
-      } else if (offsetY < (-25)) {
-        Up
-      } else {
-        None
-      }
-    )
+  switch (isHorizontalSwipe, offsetX, offsetY) {
+  | (true, offsetX, _) when offsetX > 25 => Right
+  | (true, offsetX, _) when offsetX < (-25) => Left
+  | (false, _, offsetY) when offsetY > 25 => Down
+  | (false, _, offsetY) when offsetY < (-25) => Up
+  | (_, _, _) => None
+  }
 };
-
-let gridSize = 3;
-
-let nbOfTiles = gridSize * gridSize;
 
 let (--) = (i, j) => {
   let rec aux = (n, acc) =>
