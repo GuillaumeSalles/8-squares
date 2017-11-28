@@ -33,7 +33,7 @@ let data = [|
   {
     src: src5,
     origin: "http://magastrom.tumblr.com/post/140564618950",
-    author: "Magnus �\133ström"
+    author: "Magnus Åström"
   },
   {src: src6, origin: "http://nicolereber.tumblr.com/post/112994588207", author: "Nicolerber"},
   {
