@@ -1,8 +1,8 @@
 # [8 squares](https://guillaumesalles.github.io/8-squares)
 
-## Why?
+## Motivation
 
-Just a small PWA to play with [Reason](https://reasonml.github.io/).
+Just to play with [Reason](https://reasonml.github.io/).
 
 ## Artists
 
@@ -20,7 +20,7 @@ Thanks to all the artists for their creation :
 - [Michael Cina](https://www.theghostlystore.com/collections/art/products/michael-cina-biolumin-v-1#prettyPhoto)
 - [Maria Svarbova](http://www.mariasvarbova.com/swimmingpool-gnkl)
 
-If your work is used and you want it to be removed from this app feel free to contact [me](https://twitter.com/guillaume_slls). I will remove it right away. 
+If your work is used and you want it to be removed from this app feel free to contact [me](https://twitter.com/guillaume_slls). I will remove it right away.
 
 ## Authors
 
